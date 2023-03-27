@@ -35,7 +35,8 @@ In `config/sys.config` add your server-side sdk key from `step 3` above.
   {cfclient, [
     {api_key, {environment_variable, "FF_API_KEY_0"}},
   ]
-}````
+}
+```
 
 Optional: to run [multiple instances of the SDK](https://github.com/harness/ff-erlang-server-sdk/blob/main/README.md#run-multiple-instances-of-the-sdk) for different projects you have on Harness, provide additional config for each additional instance:
 
