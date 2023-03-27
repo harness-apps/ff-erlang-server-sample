@@ -21,11 +21,17 @@ multi_instance_evaluations() ->
   %% Instance 1
   Project1Flag = <<"harnessappdemodarkmodeproject1">>,
   Project1Result = cfclient:bool_variation(instance_name_1, Project1Flag, Target, false),
-  logger:info("Instance Name 1 : Varaion for Flag ~p with Target ~p is: ~p~n",
+  logger:info("Instance Name 1 : Variation for Flag ~p with Target ~p is: ~p~n",
     [Project1Flag, maps:get(identifier, Target), Project1Result]),
 
   %% Instance 2
   Project2Flag = <<"harnessappdemodarkmodeproject2">>,
   Project2Result = cfclient:bool_variation(instance_name_2, Project2Flag, Target, false),
-  logger:info("Instance name 2 Varaion for Flag ~p with Target ~p is: ~p~n",
-  [Project2Flag, maps:get(identifier, Target), Project2Result]).
+  logger:info("Instance name 2 Variation for Flag ~p with Target ~p is: ~p~n",
+  [Project2Flag, maps:get(identifier, Target), Project2Result]),
+
+  %% Default instance
+  DefaultProjectFlag = <<"harnessappdemodarkmodedefaultproject">>,
+  DefaultProjectResult = cfclient:bool_variation(instance_name_2, DefaultProjectFlag, Target, false),
+  logger:info("Default instance Variation for Flag ~p with Target ~p is: ~p~n",
+    [DefaultProjectFlag, maps:get(identifier, Target), DefaultProjectResult]).
