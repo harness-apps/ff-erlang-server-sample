@@ -8,7 +8,7 @@ To read more, see https://ngdocs.harness.io/category/vjolt35atg-feature-flags
 
 To sign up, https://app.harness.io/auth/#/signup/
 
-This is a sample app demonstrating Erlang Server SDK integration with CF in an Erlang app.
+This is a sample app demonstrating [Erlang Server SDK integration](https://github.com/harness/ff-erlang-server-sdk) with Feature Flags in an Erlang app.
 
 ## Requirements
 - Erlang OTP 22 or newer.
