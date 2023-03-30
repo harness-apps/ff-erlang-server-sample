@@ -88,5 +88,5 @@ rebar3 shell
 
 Start the loop to print the flag value every 10 seconds
 ```shell
-sample:
+sample:multi_instance_evaluations()
 ```
