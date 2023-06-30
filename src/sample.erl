@@ -9,7 +9,7 @@
 -module(sample).
 
 %% API
--export([multi_instance_evaluations/0]).
+-export([multi_instance_evaluations/0, percentage/0]).
 
 multi_instance_evaluations() ->
   Target = #{
@@ -35,3 +35,12 @@ multi_instance_evaluations() ->
   DefaultProjectResult = cfclient:bool_variation(instance_name_2, DefaultProjectFlag, Target, false),
   logger:info("Default instance Variation for Flag ~p with Target ~p is: ~p~n",
     [DefaultProjectFlag, maps:get(identifier, Target), DefaultProjectResult]).
+
+percentage() ->
+  Target = #{
+    identifier => "frrr",
+    name => "frrr",
+    attributes => #{ anonymous => <<"true">>, host => <<"s">>}
+  },
+  Result = cfclient:string_variation("string2", Target, <<"blah">>),
+  logger:info("result is: ~p", [Result]).

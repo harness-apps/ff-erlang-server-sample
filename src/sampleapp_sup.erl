@@ -55,7 +55,7 @@ init([]) ->
     intensity => MaxRestarts,
     period => MaxSecondsBetweenRestarts},
 
-  {ok, {SupFlags, [ChildSpec1, ChildSpec2]}}.
+  {ok, {SupFlags, []}}.
 
 %%%===================================================================
 %%% Internal functions
