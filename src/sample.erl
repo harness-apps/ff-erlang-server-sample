@@ -9,7 +9,20 @@
 -module(sample).
 
 %% API
--export([multi_instance_evaluations/0]).
+-export([multi_instance_evaluations/0, run_1/0]).
+
+run_1() ->
+  Target = #{
+    identifier => "Harness_Target_1",
+    name => "HT_1",
+    attributes => #{email => <<"demo@harness.io">>}
+  },
+
+  %% Default instance
+  DefaultProjectFlag = <<"boolflag">>,
+  DefaultProjectResult = cfclient:bool_variation(DefaultProjectFlag, Target, false),
+  logger:info("Default instance Variation for Flag ~p with Target ~p is: ~p~n",
+    [DefaultProjectFlag, maps:get(identifier, Target), DefaultProjectResult]).
 
 multi_instance_evaluations() ->
   Target = #{
