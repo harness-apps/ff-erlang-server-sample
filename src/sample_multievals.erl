@@ -9,8 +9,11 @@
 
 run_percentage_rollout_evaluations(FlagIdentifier) ->
   io:format("Running 100k evaluations on flag ~p~n", [FlagIdentifier]),
+  InitialState = {0, 0, 0},
   {RolloutVariant1Count, RolloutVariant2Count, RolloutVariant3Count} =
-    evaluate_100k_unique_targets(FlagIdentifier, {0, 0, 0}, 0),
+    lists:foldl(fun(Target, Counts) ->
+      evaluate_target(FlagIdentifier, Target, Counts)
+                end, InitialState, lists:seq(1, 100000)),
 
   RolloutVariant1Percentage = round(RolloutVariant1Count / 100000 * 100 * 100) / 100,
   RolloutVariant2Percentage = round(RolloutVariant2Count / 100000 * 100 * 100) / 100,
@@ -23,31 +26,15 @@ run_percentage_rollout_evaluations(FlagIdentifier) ->
       RolloutVariant2Count, RolloutVariant2Percentage,
       RolloutVariant3Count, RolloutVariant3Percentage]).
 
-evaluate_100k_unique_targets(_, {Variation1Counter, Variation2Counter, Variation3Counter}, 100000) ->
-  {Variation1Counter, Variation2Counter, Variation3Counter};
-evaluate_100k_unique_targets(FlagIdentifier, {Variation1Counter, Variation2Counter, Variation3Counter}, Accu_in) ->
-  Counter = Accu_in + 1,
-  TargetIdentifierNumber = integer_to_list(Counter),
-  DynamicTarget = #{identifier => "target" ++ TargetIdentifierNumber,
+evaluate_target(FlagIdentifier, Target, {V1, V2, V3}) ->
+  TargetIdentifierNumber = integer_to_list(Target),
+  DynamicTarget = #{
+    identifier => "target" ++ TargetIdentifierNumber,
     name => "targetname" ++ TargetIdentifierNumber,
-    attributes => #{host => true}},
+    attributes => #{host => true}
+  },
   case cfclient:string_variation(FlagIdentifier, DynamicTarget, "default") of
-    <<"excluded">> ->
-      evaluate_100k_unique_targets(
-        FlagIdentifier,
-        {Variation1Counter + 1, Variation2Counter, Variation3Counter},
-        Counter
-      );
-    <<"control">> ->
-      evaluate_100k_unique_targets(
-        FlagIdentifier,
-        {Variation1Counter, Variation2Counter + 1, Variation3Counter},
-        Counter
-      );
-    <<"variant">> ->
-      evaluate_100k_unique_targets(
-        FlagIdentifier,
-        {Variation1Counter, Variation2Counter, Variation3Counter + 1},
-        Counter
-      )
+    <<"excluded">> -> {V1 + 1, V2, V3};
+    <<"control">> -> {V1, V2 + 1, V3};
+    <<"variant">> -> {V1, V2, V3 + 1}
   end.
