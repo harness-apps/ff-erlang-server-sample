@@ -9,7 +9,7 @@
 -module(sample).
 
 %% API
--export([multi_instance_evaluations/0, run_1/0]).
+-export([multi_instance_evaluations/0, run_hash/0]).
 
 run_1() ->
   Target = #{
@@ -48,3 +48,11 @@ multi_instance_evaluations() ->
   DefaultProjectResult = cfclient:bool_variation(instance_name_2, DefaultProjectFlag, Target, false),
   logger:info("Default instance Variation for Flag ~p with Target ~p is: ~p~n",
     [DefaultProjectFlag, maps:get(identifier, Target), DefaultProjectResult]).
+
+run_hash() ->
+  BucketBy = <<"identifier">>,
+  Value = <<"test">>,
+  Concatenated = <<BucketBy/binary, ":", Value/binary>>,
+  % Using a pure Elixir library for murmur3
+  Hash = 'Elixir.Murmur':hash_x86_32(Concatenated),
+  BucketID = (Hash rem 100) + 1.

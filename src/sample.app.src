@@ -6,7 +6,7 @@
     {vsn, "0.1.0"},
     {registered, []},
     {mod, {sample_app, []}},
-    {applications, [kernel, stdlib, cfclient]},
+    {applications, [kernel, stdlib, cfclient, murmur]},
     {env, []},
     {modules, []},
     {licenses, ["Apache-2.0"]},
